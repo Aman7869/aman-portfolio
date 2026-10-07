@@ -1,3 +1,10 @@
+/* Touch & Mobile Base Optimizations */
+html, body {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
 /* Custom Keyframe Animations */
 @keyframes blob {
   0% {
@@ -28,7 +35,7 @@
 
 /* Custom Clean Light Scrollbar */
 ::-webkit-scrollbar {
-  width: 9px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-track {

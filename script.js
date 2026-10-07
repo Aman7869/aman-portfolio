@@ -4,22 +4,49 @@ const mobileMenu = document.getElementById('mobile-menu');
 const menuIcon = document.getElementById('menu-icon');
 const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
+function closeMobileMenu() {
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+        if (mobileMenuBtn) mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        if (menuIcon) menuIcon.className = 'fa-solid fa-bars text-xl';
+    }
+}
+
 if (mobileMenuBtn) {
-    mobileMenuBtn.addEventListener('click', () => {
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         mobileMenu.classList.toggle('hidden');
-        if (mobileMenu.classList.contains('hidden')) {
-            menuIcon.className = 'fa-solid fa-bars text-xl';
-        } else {
+        const isExpanded = !mobileMenu.classList.contains('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+        if (isExpanded) {
             menuIcon.className = 'fa-solid fa-xmark text-xl';
+        } else {
+            menuIcon.className = 'fa-solid fa-bars text-xl';
         }
     });
 }
 
+// Close mobile menu when clicking any nav link
 mobileNavLinks.forEach(link => {
     link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        menuIcon.className = 'fa-solid fa-bars text-xl';
+        closeMobileMenu();
     });
+});
+
+// Close mobile menu when clicking outside header/menu
+document.addEventListener('click', (e) => {
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+            closeMobileMenu();
+        }
+    }
+});
+
+// Close mobile menu on Escape key press
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeMobileMenu();
+    }
 });
 
 // Active Link Highlight on Scroll (ScrollSpy)
